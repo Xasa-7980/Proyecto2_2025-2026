@@ -9,6 +9,8 @@ using System;
 public class FileReader : MonoBehaviour
 {
     string filePath;
+    bool file_is_Open = false;
+    private string previousContent;
     [Serializable]
     public struct GameObjectReferencesDictionary
     {
@@ -16,7 +18,8 @@ public class FileReader : MonoBehaviour
         public GameObject value;
     }
     [SerializeField] List<GameObjectReferencesDictionary> gameObjectReferencedInText = new List<GameObjectReferencesDictionary>();
-
+    public Dictionary<string,GameObjectReferencesDictionary> GetReferenced = new Dictionary<string,GameObjectReferencesDictionary>();
+    string[] lines;
     void Start()
     {
         string persistentDir = Path.Combine(Application.persistentDataPath, "Level-3");
@@ -42,15 +45,21 @@ public class FileReader : MonoBehaviour
                 return;
             }
         }
+        previousContent = File.ReadAllText(filePath);
     }
 
     void Update()
+    {
+        Level3(filePath);
+    }
+    void Level3(string fileName)
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (File.Exists(filePath))
             {
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
+                file_is_Open = true;
             }
             else
             {
@@ -58,24 +67,50 @@ public class FileReader : MonoBehaviour
             }
             ReadTextFile(filePath);
         }
-    }
 
-    string[] lines;
+        if (file_is_Open)
+        {
+            ReadTextFile(filePath);
+        }
+
+    }
     void ReadTextFile(string fileName)
     {
         lines = File.ReadLines(fileName).ToArray();
+
+        string newText = File.ReadAllText(fileName);
+        int keyIndex = 0;
         foreach (string line in lines)
         {
-            foreach(char c in line)
+            if(!line.Contains('*'))
             {
-                for (int i = 0; i < gameObjectReferencedInText.Count; i++)
-                {
-                    if (c == gameObjectReferencedInText[c].key)
-                    {
-                        gameObjectReferencedInText[c].value.SetActive(false);
-                    }
-                }
+                break;
             }
+            string[] asteriscos = line.Trim().Split('*');
+            keyIndex += asteriscos.Length - 1;
+            print(keyIndex);
+        }
+        if (previousContent != newText)
+        {
+            if (keyIndex > gameObjectReferencedInText.Count - 1)
+            {
+                VanishElement(gameObjectReferencedInText.Count - 1);
+                previousContent = File.ReadAllText(fileName);
+            }
+            VanishElement(keyIndex);
+            previousContent = File.ReadAllText(fileName);
+        }
+        else
+        {
+            print("El texto es igual");
         }
     }
-}
+    void VanishElement(int index)
+    {
+        gameObjectReferencedInText[index].value.SetActive(false);
+        file_is_Open = false;
+    }
+} 
+/*
+ HACER FULL HERENCIA CON LAS 3 ULTIMAS FUNCIONES
+ */
