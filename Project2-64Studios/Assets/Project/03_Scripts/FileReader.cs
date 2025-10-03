@@ -1,20 +1,31 @@
 using UnityEngine;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System;
 
 public class FileReader : MonoBehaviour
 {
     string filePath;
-    int pLine = -1;
-    int pColumn = -1;
+    [Serializable]
+    public struct GameObjectReferencesDictionary
+    {
+        public char key;
+        public GameObject value;
+    }
+    [SerializeField] List<GameObjectReferencesDictionary> gameObjectReferencedInText = new List<GameObjectReferencesDictionary>();
 
     void Start()
     {
         string persistentDir = Path.Combine(Application.persistentDataPath, "Level-3");
         if (!Directory.Exists(persistentDir))
-            Directory.CreateDirectory(persistentDir);
+        { 
+                Directory.CreateDirectory(persistentDir); 
+        }
 
-        filePath = Path.Combine(persistentDir, "Puzzle.txt");
+        filePath = Path.Combine(Application.persistentDataPath, "Level-3/Puzzle.txt");
 
         // Copiar archivo desde StreamingAssets si no existe
         if (!File.Exists(filePath))
@@ -31,81 +42,40 @@ public class FileReader : MonoBehaviour
                 return;
             }
         }
-
-        // Buscar la posición original de la 'p'
-        string[] lines = File.ReadAllLines(filePath);
-        bool found = false;
-        for (int i = 0; i < lines.Length; i++)
-        {
-            for (int j = 0; j < lines[i].Length; j++)
-            {
-                if (lines[i][j] == 'p')
-                {
-                    pLine = i;
-                    pColumn = j;
-                    found = true;
-                    break;
-                }
-            }
-            if (found) break;
-        }
-
-        if (!found)
-        {
-            UnityEngine.Debug.LogError("No se encontró la 'p' en el archivo al inicio.");
-        }
-        else
-        {
-            UnityEngine.Debug.Log($"Posición original de 'p': línea {pLine}, columna {pColumn}");
-        }
     }
 
     void Update()
     {
-        ProtectP(filePath);
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (File.Exists(filePath))
             {
-                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
             }
             else
             {
                 UnityEngine.Debug.LogError("No se encontró el archivo: " + filePath);
             }
+            ReadTextFile(filePath);
         }
     }
 
-    void ProtectP(string fileName)
+    string[] lines;
+    void ReadTextFile(string fileName)
     {
-        if (!File.Exists(fileName)) return;
-
-        string[] lines = File.ReadAllLines(fileName);
-
-        if (pLine < 0 || pColumn < 0 || pLine >= lines.Length)
-            return;
-
-        char[] chars = lines[pLine].ToCharArray();
-
-        // Si la columna es mayor que la longitud de la línea, expandimos con espacios
-        if (pColumn >= chars.Length)
+        lines = File.ReadLines(fileName).ToArray();
+        foreach (string line in lines)
         {
-            System.Array.Resize(ref chars, pColumn + 1);
-            for (int i = 0; i < chars.Length; i++)
+            foreach(char c in line)
             {
-                if (chars[i] == '\0')
-                    chars[i] = ' ';
+                for (int i = 0; i < gameObjectReferencedInText.Count; i++)
+                {
+                    if (c == gameObjectReferencedInText[c].key)
+                    {
+                        gameObjectReferencedInText[c].value.SetActive(false);
+                    }
+                }
             }
-        }
-
-        // Restaurar la 'p' si fue borrada
-        if (chars[pColumn] != 'p')
-        {
-            chars[pColumn] = 'p';
-            lines[pLine] = new string(chars);
-            File.WriteAllLines(fileName, lines);
-            UnityEngine.Debug.Log("Se restauró la 'p' en su posición original!");
         }
     }
 }

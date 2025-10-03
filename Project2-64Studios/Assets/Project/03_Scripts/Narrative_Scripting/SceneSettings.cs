@@ -21,7 +21,6 @@ public struct SceneSettings
 	public SceneDialog[] sceneLogs;
 	public string SelectedText()
     {
-		//El dialogo aparecera dependiendo el indice es el mismo que el del dialogo,y esta activado
 		for (int i = 0; i < sceneLogs.Length; i++)
 		{
 			if (!sceneLogs[i].hasSubLogs)
