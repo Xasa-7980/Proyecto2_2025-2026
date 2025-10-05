@@ -8,7 +8,6 @@ using System;
 
 public class FileReader : MonoBehaviour
 {
-    string filePath;
     bool file_is_Open = false;
     private string previousContent;
     [Serializable]
@@ -18,7 +17,8 @@ public class FileReader : MonoBehaviour
         public GameObject value;
     }
     [SerializeField] List<GameObjectReferencesDictionary> gameObjectReferencedInText = new List<GameObjectReferencesDictionary>();
-    public Dictionary<string,GameObjectReferencesDictionary> GetReferenced = new Dictionary<string,GameObjectReferencesDictionary>();
+    FileSystemWatcher systemWatcher;
+    string filePath;
     string[] lines;
     void Start()
     {
@@ -29,8 +29,12 @@ public class FileReader : MonoBehaviour
         }
 
         filePath = Path.Combine(Application.persistentDataPath, "Level-3/Puzzle.txt");
-
-        // Copiar archivo desde StreamingAssets si no existe
+        systemWatcher = new FileSystemWatcher();
+        systemWatcher.Path = Path.GetDirectoryName(filePath);
+        systemWatcher.Filter = Path.GetFileName(filePath);
+        systemWatcher.NotifyFilter = NotifyFilters.LastWrite;
+        systemWatcher.EnableRaisingEvents = true;
+         
         if (!File.Exists(filePath))
         {
             string sourceFile = Path.Combine(Application.streamingAssetsPath, "Level-3/Puzzle.txt");
@@ -46,6 +50,7 @@ public class FileReader : MonoBehaviour
             }
         }
         previousContent = File.ReadAllText(filePath);
+        systemWatcher.Changed += OnFileChanged;
     }
 
     void Update()
@@ -65,14 +70,19 @@ public class FileReader : MonoBehaviour
             {
                 UnityEngine.Debug.LogError("No se encontró el archivo: " + filePath);
             }
-            ReadTextFile(filePath);
+            //ReadTextFile(filePath);
         }
 
-        if (file_is_Open)
-        {
-            ReadTextFile(filePath);
-        }
+        //if (file_is_Open)
+        //{
+        //    ReadTextFile(filePath);
+        //}
 
+    }
+    void OnFileChanged(object source, FileSystemEventArgs e )
+    {
+        UnityEngine.Debug.Log("El archivo fue modificado " + e.FullPath);
+        ReadTextFile(filePath);
     }
     void ReadTextFile(string fileName)
     {
@@ -90,25 +100,31 @@ public class FileReader : MonoBehaviour
             keyIndex += asteriscos.Length - 1;
             print(keyIndex);
         }
-        if (previousContent != newText)
+        if (keyIndex > gameObjectReferencedInText.Count - 1)
         {
-            if (keyIndex > gameObjectReferencedInText.Count - 1)
-            {
-                VanishElement(gameObjectReferencedInText.Count - 1);
-                previousContent = File.ReadAllText(fileName);
-            }
-            VanishElement(keyIndex);
-            previousContent = File.ReadAllText(fileName);
+            VanishElement(gameObjectReferencedInText.Count - 1);
         }
-        else
-        {
-            print("El texto es igual");
-        }
+        print("he llegado aqui");
+        VanishElement(keyIndex);
     }
-    void VanishElement(int index)
+    void VanishElement ( int index )
     {
-        gameObjectReferencedInText[index].value.SetActive(false);
-        file_is_Open = false;
+        if (index < 0 || index >= gameObjectReferencedInText.Count)
+        {
+            UnityEngine.Debug.LogError($"Índice fuera de rango: {index}");
+            return;
+        }
+
+        var go = gameObjectReferencedInText[index].value;
+
+        if (go == null)
+        {
+            UnityEngine.Debug.LogError($"El GameObject en índice {index} es NULL (no asignado en el Inspector)");
+            return;
+        }
+
+        UnityEngine.Debug.Log($" Desactivando: {go.name}");
+        go.SetActive(false);
     }
 } 
 /*
