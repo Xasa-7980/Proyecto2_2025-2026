@@ -37,9 +37,9 @@ public class FileReader : MonoBehaviour
     FileManager curLevelFiles;
     void Start()
     {
-        level3 = new Level3("Level-3", "Level-3/Puzzle.txt",gameObjectReferencedInText);
-        level4 = new Level4("Level-4","Level-4/Puzzle.txt",globalLight);
-        level5 = new Level5("Level-5", "Level-5/Puzzle.txt", redTilesPrefab, greenTilesPrefab, tileSize,);
+        level3 = new Level3("Level-3", "Level-3/Puzzle.txt", gameObjectReferencedInText);
+        level4 = new Level4("Level-4", "Level-4/Puzzle.txt", globalLight);
+        level5 = new Level5("Level-5", "Level-5/Puzzle.txt", redTilesPrefab, greenTilesPrefab, tileSize);
         curLevelFiles = (FileManager)level3;
         string persistentDir = Path.Combine(Application.persistentDataPath, "Level-5");
         if (!Directory.Exists(persistentDir))
