@@ -7675,9 +7675,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1194314507}
-  - component: {fileID: 1194314508}
   - component: {fileID: 1194314509}
   - component: {fileID: 1194314510}
+  - component: {fileID: 1194314508}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -7794,6 +7794,7 @@ MonoBehaviour:
   redTilesPrefab: {fileID: 1067191137443050526, guid: 2aec160e99905c0438e854c79947c924, type: 3}
   greenTilesPrefab: {fileID: 7208482529007108688, guid: efb9a1401379bcd4ca756d400e859e62, type: 3}
   tileSize: 1
+  characterController: {fileID: 1194314508}
 --- !u!1 &1194541198
 GameObject:
   m_ObjectHideFlags: 0

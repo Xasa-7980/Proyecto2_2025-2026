@@ -24,30 +24,30 @@ public class FileReader : MonoBehaviour
     string filePath;
     string[] lines;
     [SerializeField] Light2D globalLight; //lvl3
-    /// <summary>
     /// Nivel 5:
     [SerializeField] GameObject redTilesPrefab;
     [SerializeField] GameObject greenTilesPrefab;
     [SerializeField] float tileSize = 1;
     List<GameObject> instantiatedPrefabs = new List<GameObject>();
-    /// </summary>
     Level3 level3;
     Level4 level4;
     Level5 level5;
     FileManager curLevelFiles;
+    //Level 6
+    public CharacterController characterController;
     void Start()
     {
         level3 = new Level3("Level-3", "Level-3/Puzzle.txt", gameObjectReferencedInText);
         level4 = new Level4("Level-4", "Level-4/Puzzle.txt", globalLight);
         level5 = new Level5("Level-5", "Level-5/Puzzle.txt", redTilesPrefab, greenTilesPrefab, tileSize);
         curLevelFiles = (FileManager)level3;
-        string persistentDir = Path.Combine(Application.persistentDataPath, "Level-5");
+        string persistentDir = Path.Combine(Application.persistentDataPath, "Level-6");
         if (!Directory.Exists(persistentDir))
         { 
                 Directory.CreateDirectory(persistentDir); 
         }
 
-        filePath = Path.Combine(Application.persistentDataPath, "Level-5/Puzzle.txt");
+        filePath = Path.Combine(Application.persistentDataPath, "Level-6/Puzzle.txt");
         systemWatcher = new FileSystemWatcher();
         systemWatcher.Path = Path.GetDirectoryName(filePath);
         systemWatcher.Filter = Path.GetFileName(filePath);
@@ -56,7 +56,7 @@ public class FileReader : MonoBehaviour
          
         if (!File.Exists(filePath))
         {
-            string sourceFile = Path.Combine(Application.streamingAssetsPath, "Level-5/Puzzle.txt");
+            string sourceFile = Path.Combine(Application.streamingAssetsPath, "Level-6/Puzzle.txt");
             if (File.Exists(sourceFile))
             {
                 File.Copy(sourceFile, filePath);
@@ -92,7 +92,7 @@ public class FileReader : MonoBehaviour
         }
         //Level3(filePath);
         //Level4(filePath);
-        Level5(filePath);
+        Level6(filePath);
     }
     void Level3(string fileName)
     {
@@ -184,6 +184,59 @@ public class FileReader : MonoBehaviour
         }
         valueFound = Mathf.Clamp(valueFound, 0f, 360f);
         globalLight.pointLightInnerAngle = valueFound;
+    }
+    void Level6 ( string fileName )
+    {
+        if (fileChanged)
+        {
+            fileChanged = false;
+            string[] lines = File.ReadAllLines(fileName);
+
+            foreach (string line in lines)
+            {
+                foreach(char c in line)
+                {
+                    switch (char.ToLower(c))
+                    {
+                        case 'r':
+                            characterController.Move(Vector3.right);
+                            break;
+                        case 'l':
+                            characterController.Move(Vector3.left);
+                            break;
+                        case 'u':
+                            characterController.Move(Vector3.up);
+                            break;
+                        case 'd':
+                            characterController.Move(Vector3.down);
+                            break;
+                        default:
+                            characterController.Move(Vector3.right);
+                            break;
+                    }
+                }
+            } 
+        }
+    }
+    void Level7 ( string fileName )
+    {
+        if (fileChanged)
+        {
+            fileChanged = false;
+            string[] lines = File.ReadAllLines(fileName);
+
+            foreach (string line in lines)
+            {
+                foreach (char c in line)
+                {
+
+                }
+                if (line == "rullrdu")
+                {
+                    //Completado escenario
+                }
+            } 
+        }
     }
     void Level5 ( string fileName )
     {

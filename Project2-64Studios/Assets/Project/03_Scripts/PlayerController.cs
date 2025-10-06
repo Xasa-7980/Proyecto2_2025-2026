@@ -10,10 +10,15 @@ public class CharacterController : MonoBehaviour
     }
     void Update()
     {
-        MovePlayer();
+        Move();
     }
-    void MovePlayer()
+    public void Move(Vector3 direction = default)
     {
+        if(direction != Vector3.zero)
+        {
+            transform.position += direction;
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.W))
         {
             transform.position += Vector3.up;
