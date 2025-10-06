@@ -41,13 +41,13 @@ public class FileReader : MonoBehaviour
         level4 = new Level4("Level-4", "Level-4/Puzzle.txt", globalLight);
         level5 = new Level5("Level-5", "Level-5/Puzzle.txt", redTilesPrefab, greenTilesPrefab, tileSize);
         curLevelFiles = (FileManager)level3;
-        string persistentDir = Path.Combine(Application.persistentDataPath, "Level-5");
+        string persistentDir = Path.Combine(Application.persistentDataPath, "Level-8");
         if (!Directory.Exists(persistentDir))
         { 
                 Directory.CreateDirectory(persistentDir); 
         }
 
-        filePath = Path.Combine(Application.persistentDataPath, "Level-5/Puzzle.txt");
+        filePath = Path.Combine(Application.persistentDataPath, "Level-8");
         systemWatcher = new FileSystemWatcher();
         systemWatcher.Path = Path.GetDirectoryName(filePath);
         systemWatcher.Filter = Path.GetFileName(filePath);
@@ -56,7 +56,7 @@ public class FileReader : MonoBehaviour
          
         if (!File.Exists(filePath))
         {
-            string sourceFile = Path.Combine(Application.streamingAssetsPath, "Level-5/Puzzle.txt");
+            string sourceFile = Path.Combine(Application.streamingAssetsPath, "Level-8");
             if (File.Exists(sourceFile))
             {
                 File.Copy(sourceFile, filePath);
@@ -83,7 +83,7 @@ public class FileReader : MonoBehaviour
         {
             if (File.Exists(filePath))
             {
-                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
+                Process.Start(new ProcessStartInfo("Assets/StreamingAssets/Level-8") { UseShellExecute = true }); //Abrir ventana
             }
             else
             {
