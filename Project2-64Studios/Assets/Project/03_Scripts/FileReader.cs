@@ -218,25 +218,26 @@ public class FileReader : MonoBehaviour
             } 
         }
     }
+    List<char> keysPressed = new List<char>();
     void Level7 ( string fileName )
     {
-        if (fileChanged)
+        Event e = Event.current;
+        if(e.isKey)
         {
-            fileChanged = false;
-            string[] lines = File.ReadAllLines(fileName);
-
-            foreach (string line in lines)
-            {
-                foreach (char c in line)
-                {
-
-                }
-                if (line == "rullrdu")
-                {
-                    //Completado escenario
-                }
-            } 
+            keysPressed.Add(e.keyCode.ToString()[0]);
         }
+
+        string storedLine = "";
+        for (int i = 0; i < keysPressed.Count; i++)
+        {
+            storedLine += keysPressed[i];
+        }
+        if (storedLine != "rullrdu")
+        {
+            keysPressed.Clear();
+            return;
+        }
+        //Completado escenario
     }
     void Level5 ( string fileName )
     {
@@ -260,7 +261,6 @@ public class FileReader : MonoBehaviour
                     DestroyImmediate(instantiatedPrefabs[i]);
                 }
                 instantiatedPrefabs.Clear();
-                instantiatedPrefabs = new List<GameObject>();
             }
             foreach (string line in lines)
             {
