@@ -1,0 +1,45 @@
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+public class Level6 : FileManager
+{
+    public CharacterController characterController;
+    public Level6 ( string _directoryPath, string _filePath, CharacterController characterController ) : base(_directoryPath, _filePath)
+    {
+        this.characterController = characterController;
+    }
+    public override void LevelMechanics ( )
+    {
+        if (fileChanged)
+        {
+            fileChanged = false;
+            string[] lines = File.ReadAllLines(filePath);
+
+            foreach (string line in lines)
+            {
+                foreach (char c in line)
+                {
+                    switch (char.ToLower(c))
+                    {
+                        case 'r':
+                            characterController.Move(Vector3.right);
+                            break;
+                        case 'l':
+                            characterController.Move(Vector3.left);
+                            break;
+                        case 'u':
+                            characterController.Move(Vector3.up);
+                            break;
+                        case 'd':
+                            characterController.Move(Vector3.down);
+                            break;
+                        default:
+                            characterController.Move(Vector3.right);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+}

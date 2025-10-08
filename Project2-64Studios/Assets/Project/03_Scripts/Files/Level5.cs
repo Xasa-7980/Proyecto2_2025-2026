@@ -22,63 +22,6 @@ public class Level5 : FileManager
         tileSize = _tileSize;
         instantiatedPrefabs = new List<GameObject> ();
     }
-    public override void InitializeDirectory ( string directoryPath, string filePath )
-    {
-        string persistentDir = Path.Combine(Application.persistentDataPath, directoryPath);
-        if (!Directory.Exists(persistentDir))
-        {
-            Directory.CreateDirectory(persistentDir);
-        }
-
-        filePath = Path.Combine(Application.persistentDataPath, filePath);
-
-        if (!File.Exists(filePath))
-        {
-            string sourceFile = Path.Combine(Application.streamingAssetsPath, filePath);
-            if (File.Exists(sourceFile))
-            {
-                File.Copy(sourceFile, filePath);
-                UnityEngine.Debug.Log("Archivo copiado a persistentDataPath");
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("No se encontró el archivo original en StreamingAssets: " + sourceFile);
-                return;
-            }
-        }
-
-    }
-    public override string[] GetFileContent ( )
-    {
-        return File.ReadAllLines(filePath);
-    }
-    public override void OpenDirectory ( )
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (File.Exists(filePath))
-            {
-                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("No se encontró el archivo: " + filePath);
-            }
-        }
-    }
-    public override void InitializeSystemWatcher ( )
-    {
-        systemWatcher = new FileSystemWatcher();
-        systemWatcher.Path = Path.GetDirectoryName(filePath);
-        systemWatcher.Filter = Path.GetFileName(filePath);
-        systemWatcher.NotifyFilter = NotifyFilters.LastWrite;
-        systemWatcher.EnableRaisingEvents = true;
-    }
-    public override void OnFileChanged ( object source, FileSystemEventArgs e )
-    {
-
-        fileChanged = true;
-    }
     public override void LevelMechanics ( )
     {
         if (fileChanged)
