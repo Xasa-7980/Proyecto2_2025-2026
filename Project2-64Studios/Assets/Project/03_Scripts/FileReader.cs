@@ -24,6 +24,9 @@ public class FileReader : MonoBehaviour
     string filePath;
     string[] lines;
     [SerializeField] Light2D globalLight; //lvl3
+    //lvl1
+    [SerializeField] float temperature; 
+    [SerializeField] SpriteRenderer renderer; 
     /// Nivel 5:
     [SerializeField] GameObject redTilesPrefab;
     [SerializeField] GameObject greenTilesPrefab;
@@ -94,7 +97,51 @@ public class FileReader : MonoBehaviour
         //Level4(filePath);
         Level6(filePath);
     }
-    void Level3(string fileName)
+    void Level1 ( string fileName )
+    {
+        string[] lines = File.ReadAllLines(fileName);
+
+        if (lines.Length == 0)
+        {
+            UnityEngine.Debug.LogWarning("El archivo está vacío.");
+            return;
+        }
+
+        float valueFound = -1f;
+
+        foreach (string line in lines)
+        {
+
+            Match match = Regex.Match(line, @"[-+]?[0-9]*\.?[0-9]+");
+            //Sirve para buscar el primer numero entero o decimal negativo o positivo
+
+            if (match.Success)
+            {
+                // Convertir el texto del número en float
+                if (float.TryParse(match.Value, System.Globalization.NumberStyles.Float,
+                                    System.Globalization.CultureInfo.InvariantCulture, out float val))
+                {
+                    valueFound = val;
+                    UnityEngine.Debug.Log($"Valor numérico encontrado: {valueFound}");
+                    break;
+                }
+            }
+        }
+
+        if (valueFound >= 0)
+        {
+            globalLight.intensity = valueFound;
+            UnityEngine.Debug.Log($"Intensidad actualizada a: {valueFound}");
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("No se encontró ningún valor numérico válido en el archivo.");
+        }
+        valueFound = Mathf.Clamp(valueFound, 0f, 360f);
+        globalLight.pointLightInnerAngle = valueFound;
+    }
+
+    void Level3 (string fileName)
     {
 
         if (fileChanged)
