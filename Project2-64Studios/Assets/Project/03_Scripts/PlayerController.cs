@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
+    [SerializeField] private LayerMask wallMask;
     void Start()
     {
     }
@@ -19,21 +20,38 @@ public class CharacterController : MonoBehaviour
             transform.position += direction;
             return;
         }
+        Vector3 dir = Vector3.zero;
         if (Input.GetKeyDown(KeyCode.W))
         {
-            transform.position += Vector3.up;
+            dir  = transform.position + Vector3.up;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            transform.position += Vector3.down;
+            dir = transform.position + Vector3.down;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            transform.position += Vector3.right;
+            dir = transform.position + Vector3.right;
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            transform.position += Vector3.left;
+            dir = transform.position + Vector3.left;
+        }
+        if (Physics2D.BoxCast(transform.position, transform.localScale, 0, transform.position + dir * 2,0, wallMask))
+        {
+            return;
+        }
+        if(dir != Vector3.zero)
+        {
+            transform.position = dir;
+        }
+    }
+    private void OnCollisionEnter2D ( Collision2D collision )
+    {
+        if(collision.gameObject.layer == 3)
+        {
+            print("He tocado la salida");
+            SceneSystem.instance.LoadNextScene();
         }
     }
 }
