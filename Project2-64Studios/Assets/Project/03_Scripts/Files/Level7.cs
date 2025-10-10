@@ -5,7 +5,7 @@ using UnityEngine;
 public class Level7 : FileManager
 {
     public List<char> keysPressed;
-    public Level7 ( string _directoryPath, string _filePath ) : base(_directoryPath, _filePath)
+    public Level7 ( string _directoryPath, string _fileName ) : base(_directoryPath, _fileName)
     {
         keysPressed = new List<char>();
     }

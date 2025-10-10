@@ -15,7 +15,7 @@ public class Level5 : FileManager
     public GameObject greenTilesPrefab;
     public float tileSize = 1;
     public List<GameObject> instantiatedPrefabs;
-    public Level5 ( string _directoryPath, string _filePath, GameObject _redTilesPrefab, GameObject _greenTilesPrefab, float _tileSize) : base(_directoryPath, _filePath)
+    public Level5 ( string _directoryPath, string _fileName, GameObject _redTilesPrefab, GameObject _greenTilesPrefab, float _tileSize) : base(_directoryPath, _fileName)
     {
         redTilesPrefab = _redTilesPrefab;
         greenTilesPrefab = _greenTilesPrefab;
@@ -72,6 +72,7 @@ public class Level5 : FileManager
                 y++;
             }
         }
+        fileChanged = false;
     }
 }
 

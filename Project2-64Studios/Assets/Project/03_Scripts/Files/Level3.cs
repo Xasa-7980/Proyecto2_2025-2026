@@ -15,7 +15,7 @@ public class Level3 : FileManager
     }
     [SerializeField] List<GameObjectReferencesDictionary> gameObjectReferencedInText = new List<GameObjectReferencesDictionary>();
 
-    public Level3 ( string _directoryPath, string _filePath,List<GameObjectReferencesDictionary> _gameObjectList ) : base(_directoryPath, _filePath) 
+    public Level3 ( string _directoryPath, string _fileName, List<GameObjectReferencesDictionary> _gameObjectList ) : base(_directoryPath, _fileName) 
     {
         gameObjectReferencedInText = _gameObjectList;
     }
@@ -42,7 +42,7 @@ public class Level3 : FileManager
         }
         UnityEngine.Debug.Log(keyIndex);
         VanishElement(keyIndex);
-        UnityEngine.Debug.Log("he llegado aqui");
+        fileChanged = false;
 
     }
     public void VanishElement(int index )

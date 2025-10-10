@@ -6,19 +6,21 @@ using UnityEngine;
 
 public abstract class FileManager
 {
-    public string filePath;
-    public bool fileChanged;
-    public string[] lines;
-    public FileSystemWatcher systemWatcher;
-    ConcurrentQueue<Action> actionQueue = new ConcurrentQueue<Action>();
-    public FileManager ( string _dirPath, string _filePath )
+    protected string fileName;
+    protected string filePath;
+    public bool fileChanged {  get; protected set; }
+    protected string[] lines;
+    protected FileSystemWatcher systemWatcher;
+
+    public FileManager ( string _directoryPath, string _fileName )
     {
-        if(_dirPath == "" && filePath == "")
+        fileName = _fileName;
+        InitializeDirectory(_directoryPath, ref filePath);
+        if(_directoryPath == "" && filePath == "")
         {
             UnityEngine.Debug.LogError("Los paths al archivo son incorrectos");
             return;
         }
-        InitializeDirectory(_dirPath,_filePath);
         InitializeSystemWatcher();
         systemWatcher.Changed += OnFileChanged;
 
@@ -34,19 +36,16 @@ public abstract class FileManager
     public abstract void LevelMechanics ( );
     public void OpenDirectory ( )
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (File.Exists(filePath))
         {
-            if (File.Exists(filePath))
-            {
-                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("No se encontró el archivo: " + filePath);
-            }
+            Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("No se encontró el archivo: " + filePath);
         }
     }
-    private void InitializeDirectory ( string directoryPath, string filePath )
+    private void InitializeDirectory ( string directoryPath, ref string filePath )
     {
         string persistentDir = Path.Combine(Application.persistentDataPath, directoryPath);
         if (!Directory.Exists(persistentDir))
@@ -54,11 +53,11 @@ public abstract class FileManager
             Directory.CreateDirectory(persistentDir);
         }
 
-        filePath = Path.Combine(Application.persistentDataPath, "filePath");
+        filePath = Path.Combine(Application.persistentDataPath, directoryPath+"/"+fileName);
 
         if (!File.Exists(filePath))
         {
-            string sourceFile = Path.Combine(Application.streamingAssetsPath, "Level-5/Puzzle.txt");
+            string sourceFile = Path.Combine(Application.streamingAssetsPath, filePath);
             if (File.Exists(sourceFile))
             {
                 File.Copy(sourceFile, filePath);

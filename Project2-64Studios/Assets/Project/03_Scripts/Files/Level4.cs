@@ -11,7 +11,7 @@ public class Level4 : FileManager
 {
 
     [SerializeField] Light2D globalLight; //lvl3
-    public Level4 ( string _directoryPath, string _filePath, Light2D _light ) : base(_directoryPath, _filePath) 
+    public Level4 ( string _directoryPath, string _fileName, Light2D _light ) : base(_directoryPath, _fileName) 
     { 
         globalLight = _light;
     }
@@ -46,12 +46,13 @@ public class Level4 : FileManager
             }
         }
 
-        valueFound = Mathf.Clamp(valueFound, 0f, 360f);
+        valueFound = Mathf.Clamp(valueFound, 0f, 2);
         ChangeLightIntensity(valueFound);
+        fileChanged = false;
     }
     void ChangeLightIntensity(float value )
     {
-        globalLight.pointLightInnerAngle = value;
+        globalLight.intensity = value;
     }
 }
 

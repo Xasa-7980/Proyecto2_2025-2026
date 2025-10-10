@@ -5,7 +5,7 @@ using UnityEngine;
 public class Level6 : FileManager
 {
     public CharacterController characterController;
-    public Level6 ( string _directoryPath, string _filePath, CharacterController characterController ) : base(_directoryPath, _filePath)
+    public Level6 ( string _directoryPath, string _fileName, CharacterController characterController ) : base(_directoryPath, _fileName)
     {
         this.characterController = characterController;
     }
@@ -41,5 +41,6 @@ public class Level6 : FileManager
                 }
             }
         }
+        fileChanged = false;
     }
 }
