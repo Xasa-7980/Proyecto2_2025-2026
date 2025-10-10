@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using System.Text.RegularExpressions;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Level4 : FileManager
 {
@@ -14,6 +15,7 @@ public class Level4 : FileManager
     public Level4 ( string _directoryPath, string _fileName, Light2D _light ) : base(_directoryPath, _fileName) 
     { 
         globalLight = _light;
+        originalContent = File.ReadAllText(filePath);
     }
     public override void LevelMechanics ( )
     {
@@ -47,6 +49,10 @@ public class Level4 : FileManager
         }
 
         valueFound = Mathf.Clamp(valueFound, 0f, 2);
+        if (valueFound >= 1)
+        {
+            isCompleted = true;
+        }
         ChangeLightIntensity(valueFound);
         fileChanged = false;
     }

@@ -1,11 +1,12 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    [SerializeField] private LayerMask wallMask;
+    [SerializeField] private LayerMask blockMask;
     void Start()
     {
     }
@@ -13,45 +14,41 @@ public class CharacterController : MonoBehaviour
     {
         Move();
     }
-    public void Move(Vector3 direction = default)
+    public void Move ( Vector3 direction = default )
     {
-        if(direction != Vector3.zero)
+        if (direction != Vector3.zero)
         {
-            transform.position += direction;
+            TryMove(direction);
             return;
         }
+
         Vector3 dir = Vector3.zero;
-        if (Input.GetKeyDown(KeyCode.W))
+
+        if (Input.GetKeyDown(KeyCode.W)) dir = Vector3.up;
+        else if (Input.GetKeyDown(KeyCode.S)) dir = Vector3.down;
+        else if (Input.GetKeyDown(KeyCode.D)) dir = Vector3.right;
+        else if (Input.GetKeyDown(KeyCode.A)) dir = Vector3.left;
+
+        if (dir != Vector3.zero) TryMove(dir);
+    }
+
+    private void TryMove ( Vector3 dir )
+    {
+        Vector3 targetPos = transform.position + dir;
+
+        Collider2D hit = Physics2D.OverlapBox(targetPos, new Vector2(1f, 1f), 0f, blockMask);
+
+        if (hit == null)
         {
-            dir  = transform.position + Vector3.up;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            dir = transform.position + Vector3.down;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            dir = transform.position + Vector3.right;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            dir = transform.position + Vector3.left;
-        }
-        if (Physics2D.BoxCast(transform.position, transform.localScale, 0, transform.position + dir * 2,0, wallMask))
-        {
-            return;
-        }
-        if(dir != Vector3.zero)
-        {
-            transform.position = dir;
+            transform.position = targetPos;
         }
     }
-    private void OnCollisionEnter2D ( Collision2D collision )
+    private void OnTriggerEnter2D ( UnityEngine.Collider2D collision )
     {
         if(collision.gameObject.layer == 3)
         {
-            print("He tocado la salida");
             SceneSystem.instance.LoadNextScene();
+            GetComponent<FileController>().ResetFiles();
         }
     }
 }

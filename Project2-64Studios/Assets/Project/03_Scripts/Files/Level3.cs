@@ -13,11 +13,12 @@ public class Level3 : FileManager
         public char key;
         public GameObject value;
     }
-    [SerializeField] List<GameObjectReferencesDictionary> gameObjectReferencedInText = new List<GameObjectReferencesDictionary>();
+    [SerializeField] List<GameObject> gameObjectReferencedInText = new List<GameObject>();
 
-    public Level3 ( string _directoryPath, string _fileName, List<GameObjectReferencesDictionary> _gameObjectList ) : base(_directoryPath, _fileName) 
+    public Level3 ( string _directoryPath, string _fileName, List<GameObject> _gameObjectList ) : base(_directoryPath, _fileName) 
     {
         gameObjectReferencedInText = _gameObjectList;
+        originalContent = File.ReadAllText(filePath);
     }
     public override void LevelMechanics ()
     {
@@ -37,8 +38,7 @@ public class Level3 : FileManager
             {
                 break;
             }
-            string[] asteriscos = line.Trim().Split('*');
-            keyIndex += asteriscos.Length - 1;
+            keyIndex += line.Trim().Split('*').Length - 1;
         }
         UnityEngine.Debug.Log(keyIndex);
         VanishElement(keyIndex);
@@ -53,7 +53,7 @@ public class Level3 : FileManager
             return;
         }
 
-        GameObject go = gameObjectReferencedInText[index].value;
+        GameObject go = gameObjectReferencedInText[index];
 
         if (go == null)
         {
@@ -63,6 +63,8 @@ public class Level3 : FileManager
 
         UnityEngine.Debug.Log($" Desactivando: {go.name}");
         go.SetActive(false);
+        isCompleted = true;
+        ResetFiles();
 
     }
 }

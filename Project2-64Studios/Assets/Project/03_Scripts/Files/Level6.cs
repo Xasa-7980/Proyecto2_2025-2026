@@ -5,9 +5,12 @@ using UnityEngine;
 public class Level6 : FileManager
 {
     public CharacterController characterController;
-    public Level6 ( string _directoryPath, string _fileName, CharacterController characterController ) : base(_directoryPath, _fileName)
+    public GameObject exit;
+    public Level6 ( string _directoryPath, string _fileName, CharacterController characterController, GameObject _exit ) : base(_directoryPath, _fileName)
     {
         this.characterController = characterController;
+        exit = _exit;
+        originalContent = File.ReadAllText(filePath);
     }
     public override void LevelMechanics ( )
     {
@@ -40,6 +43,10 @@ public class Level6 : FileManager
                     }
                 }
             }
+        }
+        if(characterController.transform == exit.transform)
+        {
+            isCompleted = true;
         }
         fileChanged = false;
     }

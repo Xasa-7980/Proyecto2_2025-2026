@@ -8,6 +8,7 @@ public class Level7 : FileManager
     public Level7 ( string _directoryPath, string _fileName ) : base(_directoryPath, _fileName)
     {
         keysPressed = new List<char>();
+        originalContent = File.ReadAllText(filePath);
     }
     public override void LevelMechanics ( )
     {

@@ -9,8 +9,10 @@ public abstract class FileManager
     protected string fileName;
     protected string filePath;
     public bool fileChanged {  get; protected set; }
+    protected bool isCompleted;
     protected string[] lines;
     protected FileSystemWatcher systemWatcher;
+    protected string originalContent;
 
     public FileManager ( string _directoryPath, string _fileName )
     {
@@ -70,6 +72,15 @@ public abstract class FileManager
             }
         }
     }
+    public virtual void SetState (bool activate )
+    {
+        isCompleted = activate;
+
+    }
+    public virtual bool GetState ( )
+    {
+        return isCompleted;
+    }
     private void InitializeSystemWatcher ( )
     {
         systemWatcher = new FileSystemWatcher();
@@ -77,5 +88,13 @@ public abstract class FileManager
         systemWatcher.Filter = Path.GetFileName(filePath);
         systemWatcher.NotifyFilter = NotifyFilters.LastWrite;
         systemWatcher.EnableRaisingEvents = true;
+    }
+    public virtual void ResetFiles()
+    {
+        string newContent = File.ReadAllText(filePath);
+        if(newContent != originalContent)
+        {
+            newContent = originalContent;
+        }
     }
 }

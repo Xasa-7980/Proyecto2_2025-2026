@@ -1,1 +1,1 @@
-Hola la luz es de: -15
+light intensity = 0

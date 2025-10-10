@@ -16,13 +16,16 @@ public class SceneSystem : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+    public int sceneIndex = 0;
     public void LoadNextScene ( )
     {
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if(sceneIndex > SceneManager.GetAllScenes().Length)
+        sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        print("He tocado la salida " + SceneSystem.instance.sceneIndex);
+        if(sceneIndex > 8)
         {
             return;
         }
+        print("He hola" + SceneSystem.instance.sceneIndex);
         SceneManager.LoadScene(sceneIndex);
     }
 }
