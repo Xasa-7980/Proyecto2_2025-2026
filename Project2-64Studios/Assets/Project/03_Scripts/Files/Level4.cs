@@ -48,12 +48,12 @@ public class Level4 : FileManager
             }
         }
 
-        valueFound = Mathf.Clamp(valueFound, 0f, 2);
+        valueFound = Mathf.Clamp(valueFound, 0f, 100);
         if (valueFound >= 1)
         {
             isCompleted = true;
         }
-        ChangeLightIntensity(valueFound);
+        ChangeLightIntensity(valueFound/100);
         fileChanged = false;
     }
     void ChangeLightIntensity(float value )

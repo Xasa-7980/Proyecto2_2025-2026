@@ -20,12 +20,12 @@ public class SceneSystem : MonoBehaviour
     public void LoadNextScene ( )
     {
         sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        print("He tocado la salida " + SceneSystem.instance.sceneIndex);
+        //print("He tocado la salida " + SceneSystem.instance.sceneIndex);
         if(sceneIndex > 8)
         {
             return;
         }
-        print("He hola" + SceneSystem.instance.sceneIndex);
+        //print("He hola" + SceneSystem.instance.sceneIndex);
         SceneManager.LoadScene(sceneIndex);
     }
 }
