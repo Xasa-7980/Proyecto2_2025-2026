@@ -18,7 +18,8 @@ public class Level6 : FileManager
         {
             fileChanged = false;
             string[] lines = File.ReadAllLines(filePath);
-
+            characterController.blockMovement = true;
+            Vector3 dir = Vector3.zero;
             foreach (string line in lines)
             {
                 foreach (char c in line)
@@ -26,27 +27,32 @@ public class Level6 : FileManager
                     switch (char.ToLower(c))
                     {
                         case 'r':
+                            dir += Vector3.right;
                             characterController.Move(Vector3.right);
                             break;
                         case 'l':
+                            dir += Vector3.left;
                             characterController.Move(Vector3.left);
                             break;
                         case 'u':
+                            dir += Vector3.up;
                             characterController.Move(Vector3.up);
                             break;
                         case 'd':
+                            dir += Vector3.down;
                             characterController.Move(Vector3.down);
                             break;
                         default:
+                            dir += Vector3.right;
                             characterController.Move(Vector3.right);
                             break;
                     }
                 }
             }
-        }
-        if(characterController.transform == exit.transform)
-        {
-            isCompleted = true;
+            if (dir == exit.transform.position)
+            {
+                isCompleted = true;
+            }
         }
         fileChanged = false;
     }

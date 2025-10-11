@@ -55,6 +55,14 @@ public class FileController : MonoBehaviour
         {
             ((Level5)curFileLevel).DrawLevel();
         }
+        if (SceneManager.GetActiveScene().name == "Level6")
+        {
+            characterController.blockMovement = true;
+        }
+        else
+        {
+            characterController.blockMovement = false;
+        }
     }
     void SetFileLevel ( string fileName )
     {

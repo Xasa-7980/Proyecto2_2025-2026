@@ -38,7 +38,7 @@ public abstract class FileManager
     public abstract void LevelMechanics ( );
     public void OpenDirectory ( )
     {
-        if (File.Exists(filePath))
+        if (File.Exists(filePath) && !isCompleted)
         {
             Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true }); //Abrir ventana
         }
@@ -95,6 +95,7 @@ public abstract class FileManager
         if(newContent != originalContent)
         {
             newContent = originalContent;
+            File.WriteAllText(filePath, originalContent);
         }
     }
 }

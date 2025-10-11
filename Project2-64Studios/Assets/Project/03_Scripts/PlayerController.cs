@@ -7,6 +7,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     [SerializeField] private LayerMask blockMask;
+    public bool blockMovement;
     void Start()
     {
     }
@@ -21,22 +22,24 @@ public class CharacterController : MonoBehaviour
             TryMove(direction);
             return;
         }
+        if (!blockMovement)
+        {
+            Vector3 dir = Vector3.zero;
 
-        Vector3 dir = Vector3.zero;
+            if (Input.GetKeyDown(KeyCode.W)) dir = Vector3.up;
+            else if (Input.GetKeyDown(KeyCode.S)) dir = Vector3.down;
+            else if (Input.GetKeyDown(KeyCode.D)) dir = Vector3.right;
+            else if (Input.GetKeyDown(KeyCode.A)) dir = Vector3.left;
 
-        if (Input.GetKeyDown(KeyCode.W)) dir = Vector3.up;
-        else if (Input.GetKeyDown(KeyCode.S)) dir = Vector3.down;
-        else if (Input.GetKeyDown(KeyCode.D)) dir = Vector3.right;
-        else if (Input.GetKeyDown(KeyCode.A)) dir = Vector3.left;
-
-        if (dir != Vector3.zero) TryMove(dir);
+            if (dir != Vector3.zero) TryMove(dir);
+        }
     }
 
     private void TryMove ( Vector3 dir )
     {
         Vector3 targetPos = transform.position + dir;
 
-        Collider2D hit = Physics2D.OverlapBox(targetPos, new Vector2(1f, 1f), 0f, blockMask);
+        Collider2D hit = Physics2D.OverlapBox(targetPos, new Vector2(0.65f, 0.65f), 0f, blockMask);
 
         if (hit == null)
         {
