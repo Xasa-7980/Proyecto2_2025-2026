@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
@@ -14,6 +15,18 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         Move();
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            SkipLevel();
+        }
+        else if(Input.GetKeyDown(KeyCode.I))
+        {
+            GoBackLevel();
+        }
+        else if(Input.GetKeyDown(KeyCode.O))
+        {
+            ResetLevel();
+        }
     }
     public void Move ( Vector3 direction = default )
     {
@@ -35,6 +48,20 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    void SkipLevel ( )
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    void ResetLevel ( )
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+    }
+    void GoBackLevel ( )
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+
+    }
     private void TryMove ( Vector3 dir )
     {
         Vector3 targetPos = transform.position + dir;

@@ -19,7 +19,7 @@ public class FileReader : MonoBehaviour
             public char key;
             public GameObject value;
         }
-        [SerializeField] List<Level3.GameObjectReferencesDictionary> gameObjectReferencedInText = new List<Level3.GameObjectReferencesDictionary>();
+        [SerializeField] List<GameObject> gameObjectReferencedInText = new List<GameObject>();
     FileSystemWatcher systemWatcher;
     string filePath;
     string[] lines;
@@ -178,7 +178,7 @@ public class FileReader : MonoBehaviour
             return;
         }
 
-        GameObject go = gameObjectReferencedInText[index].value;
+        GameObject go = gameObjectReferencedInText[index];
 
         if (go == null)
         {

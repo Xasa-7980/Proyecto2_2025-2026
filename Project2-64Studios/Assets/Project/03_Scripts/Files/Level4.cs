@@ -11,7 +11,7 @@ using static UnityEngine.Rendering.DebugUI;
 public class Level4 : FileManager
 {
 
-    [SerializeField] Light2D globalLight; //lvl3
+    [SerializeField] Light2D globalLight;
     public Level4 ( string _directoryPath, string _fileName, Light2D _light ) : base(_directoryPath, _fileName) 
     { 
         globalLight = _light;

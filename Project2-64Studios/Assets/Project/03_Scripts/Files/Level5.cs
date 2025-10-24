@@ -52,8 +52,9 @@ public class Level5 : FileManager
             foreach (char c in line)
             {
                 Vector3 topLeft = new Vector3(-7, 2.5f, 0)/*Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane))*/;
-                Vector3 position = topLeft + new Vector3(x * tileSize, -y * tileSize, 0); x++;
-                GameObject prefabToUse = (c == 'R') ? redTilesPrefab : (c == 'G') ? greenTilesPrefab : redTilesPrefab;
+                Vector3 position = topLeft + new Vector3(x * tileSize, -y * tileSize, 0); 
+                x++;
+                GameObject prefabToUse = (c == 'R') ? redTilesPrefab : (c == 'G') ? greenTilesPrefab : redTilesPrefab; //Pasar a to_upper
                 UnityEngine.Debug.Log(prefabToUse);
 
                 if (prefabToUse != null)
@@ -98,6 +99,7 @@ public class Level5 : FileManager
                     Vector3 topLeft = new Vector3(-7, 2.5f, 0)/*Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane))*/;
                     Vector3 position = topLeft + new Vector3(x * tileSize, -y * tileSize, 0); x++;
                     GameObject prefabToUse = (c == 'R') ? redTilesPrefab : (c == 'G') ? greenTilesPrefab : redTilesPrefab;
+                    //pasar a .ToLower(c) para mayusculas
                     UnityEngine.Debug.Log(prefabToUse);
 
                     if (prefabToUse != null)

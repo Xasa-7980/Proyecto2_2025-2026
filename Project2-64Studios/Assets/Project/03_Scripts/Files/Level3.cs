@@ -7,12 +7,6 @@ using System.Diagnostics;
 
 public class Level3 : FileManager
 {
-    [Serializable]
-    public struct GameObjectReferencesDictionary
-    {
-        public char key;
-        public GameObject value;
-    }
     [SerializeField] List<GameObject> gameObjectReferencedInText = new List<GameObject>();
 
     public Level3 ( string _directoryPath, string _fileName, List<GameObject> _gameObjectList ) : base(_directoryPath, _fileName) 
@@ -30,7 +24,6 @@ public class Level3 : FileManager
         }
         lines = File.ReadLines(filePath).ToArray();
 
-        string newText = File.ReadAllText(filePath);
         int keyIndex = 0;
         foreach (string line in lines)
         {
@@ -45,7 +38,7 @@ public class Level3 : FileManager
         fileChanged = false;
 
     }
-    public void VanishElement(int index )
+    private void VanishElement(int index )
     {
         if (index < 0 || index >= gameObjectReferencedInText.Count)
         {
