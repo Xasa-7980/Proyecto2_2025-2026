@@ -564,7 +564,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1499277587}
   - component: {fileID: 1499277586}
-  - component: {fileID: 1499277589}
   - component: {fileID: 1499277588}
   - component: {fileID: 1499277590}
   m_Layer: 0
@@ -615,20 +614,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path: 
   jsonFile: 
---- !u!114 &1499277589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499277585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 280e5a1004dd4e14aab1037f628cade3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: 
-  jsonFile: 
 --- !u!114 &1499277590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,6 +626,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3932d0a164c7fd44da9510525d0d0147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: 
+  jsonFile: 
   Wall1: {fileID: 1172092561}
   Wall2: {fileID: 1488866513}
   Wall3: {fileID: 225182362}
