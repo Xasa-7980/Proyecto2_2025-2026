@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEngine;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class Watcher : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class Watcher : MonoBehaviour
     {
         //Primero indicamos que archivo y que cambios queremos que vigile
         watcher = new FileSystemWatcher();
-        watcher.Path = Path.GetDirectoryName(Application.persistentDataPath);
-        watcher.Filter = Path.GetFileName(path);
+        watcher.Path = Path.GetDirectoryName("C:\\Users\\andre\\AppData\\LocalLow\\DefaultCompany\\Project2 - 64Studios");
+        watcher.Filter = Path.GetFileName("Level3.json");
         watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
         watcher.Changed += OnFileChanged;
         watcher.EnableRaisingEvents = true;
