@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Level3Json : JSON
 {
-    public FileWatcher level3Watcher;
     public Level3Content level3Content; 
+    public Level3Content originalLevel3Content; 
     public class Level3Content
     {
         public bool FirstWallActive = true;
@@ -15,12 +15,8 @@ public class Level3Json : JSON
     }
     public override void SetJson()
     {
-        level3Content = new Level3Content();
-
         path = Path.Combine(Application.persistentDataPath, "Level3.json");
-        jsonFile = JsonUtility.ToJson(level3Content, true);
-        
-        level3Watcher.path = path; 
+        jsonFile = JsonUtility.ToJson(originalLevel3Content, true);
     }
     public override void SaveJson()
     {

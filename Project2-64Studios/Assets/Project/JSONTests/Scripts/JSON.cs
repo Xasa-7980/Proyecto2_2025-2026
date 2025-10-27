@@ -11,5 +11,4 @@ public class JSON : MonoBehaviour
 
     public virtual void LoadJson() { }
 
-    public virtual void LoadLevel() { } 
 }
