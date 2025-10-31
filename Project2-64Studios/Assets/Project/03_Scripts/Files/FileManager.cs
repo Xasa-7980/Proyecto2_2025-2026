@@ -92,10 +92,7 @@ public abstract class FileManager
     public virtual void ResetFiles()
     {
         string newContent = File.ReadAllText(filePath);
-        if(newContent != originalContent)
-        {
-            newContent = originalContent;
-            File.WriteAllText(filePath, originalContent);
-        }
+        newContent = originalContent;
+        File.WriteAllText(filePath, originalContent);
     }
 }

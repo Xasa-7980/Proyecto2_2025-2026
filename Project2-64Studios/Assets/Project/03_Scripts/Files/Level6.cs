@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Level6 : FileManager
 {
@@ -28,6 +29,7 @@ public class Level6 : FileManager
                     {
                         case 'r':
                             dir += Vector3.right;
+
                             characterController.Move(Vector3.right);
                             break;
                         case 'l':

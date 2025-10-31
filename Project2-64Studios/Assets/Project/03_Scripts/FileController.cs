@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
@@ -63,13 +64,35 @@ public class FileController : MonoBehaviour
         {
             characterController.blockMovement = false;
         }
+
+        nextScene = () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        resetScene = () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        prevScene = () => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
+    Action nextScene;
+    Action prevScene;
+    Action resetScene;
+
     void SetFileLevel ( string fileName )
     {
         curFileLevel = files[fileName];
     }
     private void Update ( )
     {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            nextScene?.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            prevScene?.Invoke();
+
+        }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            resetScene?.Invoke();
+
+        }
         if(curFileLevel != null)
         {
             if (SceneManager.GetActiveScene().name == "Level3")
